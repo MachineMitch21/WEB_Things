@@ -20,30 +20,59 @@
 		<div class="trigger-area">
 			<input type="checkbox" id="nav-trigger" class="nav-trigger">
 			<label for="nav-trigger"><img src="images/hamburgerBtn.png"></label>
-
 		</div>
 
 	</header>
 	<nav id="nav" class="nav-top">
 		<ul class="nav-list">
-			<li class="nav-item"><a href="">Sources</a></li>
-			<li class="nav-item"><a href="">About Me</a></li>
-			<li class="nav-item"><a href="">Something</a></li>
+			<li class="nav-item"><a href="#">Sources</a></li>
+			<li class="nav-item"><a href="#">About Me</a></li>
+			<li class="nav-item"><a href="#">Something</a></li>
 		</ul>
 	</nav>
 	<main>
 		<div class="content">
 			<nav id="view-criteria" class="view-criteria area">
 				<ul class="criteria-list">
-					<li class="criteria-item"><a href="">View</a></li>
-					<li class="criteria-item"><a href="">Past Hour</a></li>
-					<li class="criteria-item"><a href="">Past Day</a></li>
-					<li class="criteria-item"><a href="">Past 7 Days</a></li>
-					<li class="criteria-item"><a href="">Past 30 Days</a></li>
+					<li class="criteria-item"><a href="#">View</a>	
+						<div class="criteria-trigger-area">
+							<input type="checkbox" id="criteria-trigger1" class="criteria-trigger">
+							<label for="criteria-trigger1"><img class="arrowImg" src="images/expandArrow.png"></label>
+						</div>
+						<ul id="map-style" class="sub-criteria-list">
+							<li class="sub-criteria-item"><a href="#">Satellite</a></li>
+							<li class="sub-criteria-item"><a href="#">Dark</a></li>
+							<li class="sub-criteria-item"><a href="#">Streets</a></li>
+						</ul>
+					</li>
+					<li class="criteria-item"><a href="#">Past Hour</a>	
+						<div class="criteria-trigger-area">
+							<input type="checkbox" id="criteria-trigger2" class="criteria-trigger">
+							<label for="criteria-trigger2"><img class="arrowImg" src="images/expandArrow.png"></label>
+						</div>						
+					</li>
+					<li class="criteria-item"><a href="#">Past Day</a>	
+						<div class="criteria-trigger-area">
+							<input type="checkbox" id="criteria-trigger3" class="criteria-trigger">
+							<label for="criteria-trigger3"><img class="arrowImg" src="images/expandArrow.png"></label>
+						</div>		
+					</li>
+					<li class="criteria-item"><a href="#">Past 7 Days</a>
+						<div class="criteria-trigger-area">
+							<input type="checkbox" id="criteria-trigger4" class="criteria-trigger">
+							<label for="criteria-trigger4"><img class="arrowImg" src="images/expandArrow.png"></label>
+						</div>						
+					</li>
+					<li class="criteria-item"><a href="#">Past 30 Days</a>
+						<div class="criteria-trigger-area">
+							<input type="checkbox" id="criteria-trigger5" class="criteria-trigger">
+							<label for="criteria-trigger5"><img class="arrowImg" src="images/expandArrow.png"></label>
+						</div>					
+					</li>
 				</ul>
 			</nav>
 			<div id="map" class="map-area area">
-				<canvas class="map_canvas"></canvas>
+				<!-- <canvas class="map_canvas"></canvas> -->
 			</div>
 			<div class="more-info area">
 				<header class="header-more-info"><h2>Earthquake Details</h2></header>
@@ -69,20 +98,52 @@
 			<footer>Thank you for checking out the earthquake mapper!</footer>
 		</div>
 	</main>
+	<script src="includes/jQuery.min.js"></script>
+	<script src="includes/p5.min.js"></script>
+	<script src="js/helper.js"></script>
 	<script src="js/earthquake.js"></script>
 	<script src="js/point.js"></script>
-	<script src="js/map_view.js"></script>
+	<script src="js/map.js"></script>
 	<script>
-		document.getElementById("nav-trigger").checked = false;
-		$("#nav-trigger").on("click", showHideMenus);
+		var nav_trig = document.getElementById("nav-trigger");
+		var nav_top = document.getElementsByClassName("nav-top")[0];
+		var view_criteria = document.getElementById("view-criteria");
+		var sub_crit_lists = document.getElementsByClassName("sub-criteria-list");
+		var crit_trigs = document.getElementsByClassName("criteria-trigger");
+		var arrows = document.getElementsByClassName("arrowImg");
+		
+		nav_trig.checked = false;
+		nav_trig.onclick = showHideMenus;
+		
+		for(var i = 0; i < crit_trigs.length; i++){
+			crit_trigs[i].onclick = showHideSubCriteria;
+		}
 				
-		function showHideMenus(){
-				if($(":checked").length > 0){
-					document.getElementById("view-criteria").style.height = "242px";
-					document.getElementsByClassName("nav-top")[0].style.height = "125px";
+			function showHideMenus(){
+				if(nav_trig.checked == true){
+					view_criteria.style.height = "242px";
+					nav_top.style.height = "125px";
+					
 				}else{
-					document.getElementById("view-criteria").style.height = "0px";
-					document.getElementsByClassName("nav-top")[0].style.height = "0px";
+					view_criteria.style.height = "0px";
+					nav_top.style.height = "0px";
+				}
+			}
+			
+			function showHideSubCriteria(event){
+				for(var i = 0; i < crit_trigs.length; i++){
+					if(event.target == crit_trigs[i]){
+						
+						if(event.target.checked == true){
+							arrows[i].style.transform = "rotate(180deg)";
+							sub_crit_lists[i].style.height = "auto";
+							sub_crit_lists[i].style.visibility = "visible";
+						}else{
+							arrows[i].style.transform = "rotate(0deg)";
+							sub_crit_lists[i].style.height = "0px";
+							sub_crit_lists[i].style.visibility = "hidden";
+						}
+					}	
 				}
 			}
 	</script>
