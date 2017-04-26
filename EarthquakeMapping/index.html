@@ -6,12 +6,9 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/main.css"/>
 	<link href='https://api.mapbox.com/mapbox-gl-js/v0.35.1/mapbox-gl.css' rel='stylesheet' />
-	<script src="includes/jQuery.min.js"></script>
-	<script src="includes/p5.min.js"></script>
+	
 </head>
 <body>
-
-
 	<header class="header-content">
 		<div id="header-img-container">
 			<img src="http://placehold.it/78x78" id="logo"/>
@@ -97,55 +94,11 @@
 			</div>
 			<footer>Thank you for checking out the earthquake mapper!</footer>
 		</div>
-	</main>
 	<script src="includes/jQuery.min.js"></script>
 	<script src="includes/p5.min.js"></script>
 	<script src="js/helper.js"></script>
-	<script src="js/earthquake.js"></script>
-	<script src="js/point.js"></script>
+	<script src="js/app.js"></script>
 	<script src="js/map.js"></script>
-	<script>
-		var nav_trig = document.getElementById("nav-trigger");
-		var nav_top = document.getElementsByClassName("nav-top")[0];
-		var view_criteria = document.getElementById("view-criteria");
-		var sub_crit_lists = document.getElementsByClassName("sub-criteria-list");
-		var crit_trigs = document.getElementsByClassName("criteria-trigger");
-		var arrows = document.getElementsByClassName("arrowImg");
-		
-		nav_trig.checked = false;
-		nav_trig.onclick = showHideMenus;
-		
-		for(var i = 0; i < crit_trigs.length; i++){
-			crit_trigs[i].onclick = showHideSubCriteria;
-		}
-				
-			function showHideMenus(){
-				if(nav_trig.checked == true){
-					view_criteria.style.height = "242px";
-					nav_top.style.height = "125px";
-					
-				}else{
-					view_criteria.style.height = "0px";
-					nav_top.style.height = "0px";
-				}
-			}
-			
-			function showHideSubCriteria(event){
-				for(var i = 0; i < crit_trigs.length; i++){
-					if(event.target == crit_trigs[i]){
-						
-						if(event.target.checked == true){
-							arrows[i].style.transform = "rotate(180deg)";
-							sub_crit_lists[i].style.height = "auto";
-							sub_crit_lists[i].style.visibility = "visible";
-						}else{
-							arrows[i].style.transform = "rotate(0deg)";
-							sub_crit_lists[i].style.height = "0px";
-							sub_crit_lists[i].style.visibility = "hidden";
-						}
-					}	
-				}
-			}
-	</script>
+	</main>
 </body>
 </html>

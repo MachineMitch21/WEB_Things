@@ -114,12 +114,17 @@ h1, h2, h3{
 .nav-trigger, .criteria-trigger{
 	clip: rect(0,0,0,0);
 	position: absolute;
+	
 }
 
 label{
 	cursor: pointer;
+	transition: padding 1s;
 }
 
+label[for="nav-trigger"]:hover{
+	padding: 10px;
+}
 /*
 *	Content 
 */
@@ -141,8 +146,8 @@ label{
 }
 
 .map_canvas{
-	background: url("https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/0,0,1,0,0/1280x1280?access_token=pk.eyJ1IjoibWl0Y2gtc2NodXR0IiwiYSI6ImNqMW1mMDFwazAwN20zM2thYmQ5b21ybWkifQ.zKBZz0z_L7AS_EpZJ9voTA");
-	background-size: cover;
+/* 	background: url("https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/0,0,1,0,0/1280x1280?access_token=pk.eyJ1IjoibWl0Y2gtc2NodXR0IiwiYSI6ImNqMW1mMDFwazAwN20zM2thYmQ5b21ybWkifQ.zKBZz0z_L7AS_EpZJ9voTA");
+	background-size: cover; */
 	background-color: #021015;
 	height: inherit !important;
 	width: 100% !important;
