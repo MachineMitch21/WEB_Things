@@ -36,7 +36,6 @@ function showHideMenus(){
 }
 
 function showHideSubCriteria(event){
-	var isChecked = false;
 	for(var i = 0; i < crit_trigs.length; i++){
 		if(event.target == crit_trigs[i]){
 			
@@ -54,17 +53,12 @@ function showHideSubCriteria(event){
 			isChecked = true;
 		}
 	}
-	
-	if(!isChecked){
-		view_criteria.style.overflow = "hidden";
-	}else{
-		if(view_criteria.style.height > criteria_list.style.height)
-			view_criteria.style.overflow = "scroll";
-	}
 }
 
 function setSubCheckedStyles(i){
 	arrows[i].style.transform = "rotate(180deg)";
+	
+	$(".criteria-list").css("z-index", 20);
 	
 	if(sub_crit_lists[i] != undefined){
 		sub_crit_lists[i].style.height = "auto";
@@ -75,6 +69,8 @@ function setSubCheckedStyles(i){
 
 function setSubNotCheckedStyles(i){
 	arrows[i].style.transform = "rotate(0deg)";
+	
+	$(".criteria-list").css("z-index", 0);
 	
 	if(sub_crit_lists[i] != undefined){
 		sub_crit_lists[i].style.height = "0px";
