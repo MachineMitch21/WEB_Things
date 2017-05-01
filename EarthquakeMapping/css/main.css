@@ -396,3 +396,14 @@ footer{
 		font-size: 115%;
 	}
 }
+
+@media screen and (min-width: 1800px){
+	
+	main{
+		width: 1600px;
+	}
+	
+	.map-area{
+		height: 800px;
+	}
+}

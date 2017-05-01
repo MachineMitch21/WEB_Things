@@ -6,6 +6,8 @@ var criteria_list = document.getElementsByClassName("criteria-list")[0];
 var sub_crit_lists = document.getElementsByClassName("sub-criteria-list");
 var crit_trigs = document.getElementsByClassName("criteria-trigger");
 var arrows = document.getElementsByClassName("arrowImg");
+var map_changers = document.getElementsByClassName("view_change");
+var cvs = document.getElementById("map-cvs");
 
 function init(){
 	createListeners();
@@ -17,6 +19,10 @@ function createListeners(){
 
 	for(var i = 0; i < crit_trigs.length; i++){
 		crit_trigs[i].onclick = showHideSubCriteria;
+	}
+	
+	for(var i = 0; i < map_changers.length; i++){
+		map_changers[i].onclick = changeImage;
 	}
 }
 
@@ -77,6 +83,17 @@ function setSubNotCheckedStyles(i){
 		sub_crit_lists[i].style.visibility = "hidden";
 	}
 
+}
+
+function changeImage(event){
+	if(event.target == map_changers[0]){
+		setup(mapImg_satellite);
+	}else if(event.target == map_changers[1]){
+		setup(mapImg_dark);
+	}else if(event.target == map_changers[2]){
+		setup(mapImg_streets);
+	}
+		
 }
 
 if(window.addEventListener){

@@ -42,7 +42,9 @@ var QuakePointModel = Backbone.Model.extend({
 	
 }); */
 
-var mapImg;
+var mapImg_dark;
+var mapImg_streets;
+var mapImg_satellite;
 var scaledImg;
 
 var clat 	= 0;
@@ -55,19 +57,32 @@ var cy		= 0;
 
 var earthquakes;
 
+var dark_url;
+var sat_url;
+var street_url;
+
 function preload(){
-	ldStr = 'https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/0,0,' + zoom + ',0,0/' + mapX + 'x' + mapY + '?access_token=pk.eyJ1IjoibWl0Y2gtc2NodXR0IiwiYSI6ImNqMW1mMDFwazAwN20zM2thYmQ5b21ybWkifQ.zKBZz0z_L7AS_EpZJ9voTA';
-	mapImg = loadImage(ldStr);
+	dark_url = 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/0,0,' + zoom + ',0,0/' + mapX + 'x' + mapY + '?access_token=pk.eyJ1IjoibWl0Y2gtc2NodXR0IiwiYSI6ImNqMW1mMDFwazAwN20zM2thYmQ5b21ybWkifQ.zKBZz0z_L7AS_EpZJ9voTA';
+	sat_url = 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/0,0,' + zoom + ',0,0/' + mapX + 'x' + mapY + '?access_token=pk.eyJ1IjoibWl0Y2gtc2NodXR0IiwiYSI6ImNqMW1mMDFwazAwN20zM2thYmQ5b21ybWkifQ.zKBZz0z_L7AS_EpZJ9voTA';
+	street_url = 'https://api.mapbox.com/styles/v1/mapbox/streets-v9/static/0,0,' + zoom + ',0,0/' + mapX + 'x' + mapY + '?access_token=pk.eyJ1IjoibWl0Y2gtc2NodXR0IiwiYSI6ImNqMW1mMDFwazAwN20zM2thYmQ5b21ybWkifQ.zKBZz0z_L7AS_EpZJ9voTA';
+	
+	mapImg_dark = loadImage(dark_url);
+	mapImg_streets = loadImage(street_url);
+	mapImg_satellite = loadImage(sat_url);
 	
 	earthquakes = loadStrings('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv');
 	console.log(earthquakes);
 }
 
-function setup(){
+function setup(img){
 	var cvs = createCanvas(mapX, mapY);
 	translate(width / 2, height / 2);
 	imageMode(CENTER);
-	image(mapImg, 0, 0);
+	
+	if(img == undefined)
+		image(mapImg_dark,0,0);
+	else
+		image(img,0,0);
 	
 	var cx = mercX(clon, zoom, mapX);
 	var cy = mercY(clat, zoom, mapX);
