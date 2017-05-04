@@ -3,6 +3,7 @@ var nav_trig = document.getElementById("nav-trigger");
 var nav_top = document.getElementsByClassName("nav-top")[0];
 var view_criteria = document.getElementById("view-criteria");
 var criteria_list = document.getElementsByClassName("criteria-list")[0];
+var criteria_items = document.getElementsByClassName("inner-crit-item");
 var sub_crit_lists = document.getElementsByClassName("sub-criteria-list");
 var crit_trigs = document.getElementsByClassName("criteria-trigger");
 var arrows = document.getElementsByClassName("arrowImg");
@@ -23,6 +24,11 @@ function createListeners(){
 	
 	for(var i = 0; i < map_changers.length; i++){
 		map_changers[i].onclick = changeImage;
+	}
+	
+	for(var i = 0; i < criteria_items.length; i++){
+		if(i > 0)
+			criteria_items[i].onclick = changeData;
 	}
 }
 
@@ -54,7 +60,7 @@ function showHideSubCriteria(event){
 			if(sub_crit_lists[i] != undefined && crit_trigs[i].checked != true)
 				setSubNotCheckedStyles(i);
 		}
-		console.log(crit_trigs[i].checked);
+		
 		if(crit_trigs[i].checked == true){
 			isChecked = true;
 		}
@@ -87,13 +93,23 @@ function setSubNotCheckedStyles(i){
 
 function changeImage(event){
 	if(event.target == map_changers[0]){
-		setup(mapImg_satellite);
+		setup(mapImg_satellite, selectedData);
 	}else if(event.target == map_changers[1]){
-		setup(mapImg_dark);
+		setup(mapImg_dark, selectedData);
 	}else if(event.target == map_changers[2]){
-		setup(mapImg_streets);
+		setup(mapImg_streets, selectedData);
 	}
-		
+}
+
+function changeData(event){
+	if(event.target == criteria_items[1])
+		setup(selectedImg, quakes_hour);
+	else if(event.target == criteria_items[2])
+		setup(selectedImg, quakes_day);
+	else if(event.target == criteria_items[3])
+		setup(selectedImg, quakes_week);
+	else if(event.target == criteria_items[4])
+		setup(selectedImg, quakes_month);
 }
 
 if(window.addEventListener){

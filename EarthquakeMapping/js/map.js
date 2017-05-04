@@ -9,7 +9,8 @@ var Earthquake = function (time, lat, lon, depth, mag){
 }
 
 //QuakePoint object used to visualize the Earthquake data to a point on the map
-var QuakePoint = function(x, y, w, h){
+var QuakePoint = function(x, y, w, h, quake){
+	this.q = quake;
 	this.x = x;
 	this.y = y;
 	this.w = w;
@@ -45,17 +46,25 @@ var QuakePointModel = Backbone.Model.extend({
 var mapImg_dark;
 var mapImg_streets;
 var mapImg_satellite;
-var scaledImg;
+
+var selectedImg;
 
 var clat 	= 0;
 var clon	= 0;
 var zoom 	= 1;
-var mapX 	= 1024;
-var mapY 	= 1024;
+var mapX 	= 1280;
+var mapY 	= 1280;
 var cx		= 0;
 var cy		= 0;
 
-var earthquakes;
+//Arrays to hold data called from earthquake.usgs.gov and be passed into setup from app.js depending on which view-item is clicked
+var quakes_day		= new Array();
+var quakes_week 	= new Array();
+var quakes_hour 	= new Array();
+var quakes_month	= new Array();
+var points 			= new Array();
+
+var selectedData;
 
 var dark_url;
 var sat_url;
@@ -70,33 +79,39 @@ function preload(){
 	mapImg_streets = loadImage(street_url);
 	mapImg_satellite = loadImage(sat_url);
 	
-	earthquakes = loadStrings('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv');
-	console.log(earthquakes);
+	quakes_hour = loadStrings('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.csv');	
+	quakes_day = loadStrings('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv');
+	quakes_week = loadStrings('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.csv');	
+	quakes_month = loadStrings('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv');	
 }
 
-function setup(img){
+function setup(img, quake_arr){
+	
 	var cvs = createCanvas(mapX, mapY);
 	translate(width / 2, height / 2);
 	imageMode(CENTER);
 	
-	if(img == undefined)
-		image(mapImg_dark,0,0);
-	else
-		image(img,0,0);
-	
-	var cx = mercX(clon, zoom, mapX);
-	var cy = mercY(clat, zoom, mapX);
-
-	console.log(earthquakes.length);
-	for(var i = 1; i < earthquakes.length; i++){
-		var data = earthquakes[i].split(/,/);
-		var quake = new Earthquake(data[0], data[1], data[2], data[3], data[4]);
-		var mag = quake.mag * 3;
-		var p = new QuakePoint(mercX(quake.lon, zoom, mapX) - cx, mercY(quake.lat, zoom, mapX) - cy, mag, mag);
+	if(points.length > 0){
 		
-		stroke(0, 0, 0);
-		fill(255, 0, 0, 200);
-		ellipse(p.x, p.y, p.w, p.h);
+		for(var i = 0; i < points.length; i++){
+			points.pop();
+		}
+	}
+	
+	if(img == undefined){
+		image(mapImg_dark,0,0);
+		selectedImg = mapImg_dark;
+	}else{
+		image(img,0,0);
+		selectedImg = img;
+	}
+	
+	if(quake_arr == undefined){
+		prepMapData(quakes_hour);
+		selectedData = quakes_hour;
+	}else{
+		prepMapData(quake_arr);
+		selectedData = quake_arr;
 	}
 	
 	cvs.parent("map"); 
@@ -111,4 +126,24 @@ function draw(){
 function windowResized(){
 	
 } 
+
+function prepMapData(quake_arr){
+	
+	var cx = mercX(clon, zoom, mapX);
+	var cy = mercY(clat, zoom, mapX);
+
+	for(var i = 1; i < quake_arr.length; i++){
+		var data = quake_arr[i].split(/,/);
+		var quake = new Earthquake(data[0], data[1], data[2], data[3], data[4]);
+		var mag = quake.mag * 3;
+		var p = new QuakePoint(mercX(quake.lon, zoom, mapX) - cx, mercY(quake.lat, zoom, mapX) - cy, mag, mag, quake);
+		
+		points.push(p);
+		
+		stroke(0, 0, 0);
+		fill(255, 0, 0, 200);
+		ellipse(p.x, p.y, p.w, p.h);
+	}
+	
+}
 
